@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import geocoder
 # import matplotlib.pyplot as plt
  
 import sys
@@ -13,54 +14,62 @@ nick_cand['sanders'] = ['bernie', 'sanders']
 nick_cand['hillary'] = ['hillary', 'clinton']
 
 tweet_cand = {}
-tweet_cand['trump'] = []
-tweet_cand['cruz'] = []
-tweet_cand['kasich'] = []
-tweet_cand['sanders'] = []
-tweet_cand['hillary'] = []
+tweet_cand['trump'] = {}
+tweet_cand['cruz'] = {}
+tweet_cand['kasich'] = {}
+tweet_cand['sanders'] = {}
+tweet_cand['hillary'] = {}
 
+"""
+  sort a tweet by candidate and state
+"""
 def separate_candidate(tweet):
-	cand = None
-	count = 0
-	for c, ls in nick_cand.items():
-		for nick in ls:
-			if nick in tweet['text']:
-				if count == 0:
-					cand = c
-					count += 1
-				else:
-					count += 1
-					break
-		# tweet contains more than 1 candidate
-		if count > 1:
-			break
+  cand = None
+  count = 0
+  for c, ls in nick_cand.items():
+    for nick in ls:
+      if nick in tweet['text']:
+        if count == 0:
+          cand = c
+          count += 1
+        else:
+          count += 1
+          break
+    # tweet contains more than 1 candidate
+    if count > 1:
+      break
 
-	# tweet contains only 1 candidate
-	if count == 1 and cand != None:
-		tweet_cand[cand].append(tweet)
+  # tweet contains only 1 candidate
+  if count == 1 and cand != None:
+    g = geocoder.google(tweet['place']['full_name'])
+    if g.state not in tweet_cand[cand]:
+      tweet_cand[cand][g.state] = []
+    tweet_cand[cand][g.state].append(tweet)
 
 
 
 file_name = "dem_tweets.txt"
 arguments = sys.argv[1:]
 for argument in arguments:
-    if argument == "gop":
-        file_name = "gop_tweets.txt"
-    elif argument in ["dem", "dems"]:
-        candidates_filter = "dem_tweets.txt"
+  if argument == "gop":
+    file_name = "gop_tweets.txt"
+  elif argument in ["dem", "dems"]:
+    candidates_filter = "dem_tweets.txt"
  
 tweets_data_path = file_name
  
 tweets_data = []
 tweets_file = open(tweets_data_path, "r")
 for line in tweets_file:
-    try:
-        tweet = json.loads(line)
-        separate_candidate(tweet)
-        # tweets_data.append(tweet)
-    except:
-        continue
+  try:
+    tweet = json.loads(line)
+    if tweet['place'] != None:
+      separate_candidate(tweet)
+    # tweets_data.append(tweet)
+  except:
+    continue
 
+print tweet_cand['hillary']
 tweets = pd.DataFrame()
  
 # ----------------------
