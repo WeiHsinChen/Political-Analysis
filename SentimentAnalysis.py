@@ -54,8 +54,6 @@ class SentimentAnalysis:
     start = time()
 
     # variables
-    # num_train = 1599860*9/10    # create dev
-    num_train = 1599860         # NOT create dev
     train_data = []
     train_label = []
     dev_data = []
@@ -89,7 +87,6 @@ class SentimentAnalysis:
     train_label_file.close()
 
     print "parsing: cost %f sec" % (time()-start)
-
     return (train_data, train_label)
 
   def train_model(self, train_data, train_label):
@@ -97,10 +94,11 @@ class SentimentAnalysis:
     print 'training...'
     start = time()
 
+    num_feature = len(train_data[0])
     clf_tmp = Pipeline([('vect', CountVectorizer(ngram_range=(1,3))), 
         ('tfidf', TfidfTransformer(use_idf=True)),
         # ('feaSel',  SelectKBest(chi2, k=12000000)),
-        ('feaSel',  SelectKBest(chi2, k=5000000)),
+        ('feaSel',  SelectKBest(chi2, k=num_feature*0.7)),
         ('clf', LinearSVC())])
 
     self.clf = clf_tmp.fit(train_data, train_label)
@@ -130,22 +128,24 @@ class SentimentAnalysis:
     train_label_path = 'train_label'
     tmp1 = np.load(train_data_path)
     tmp2 = np.load(train_label_path)
+
     print "loading data: cost %f sec" % (time()-start)
     return (tmp1, tmp2)
 
-  def train(self, processed=False):
+  def train(self, train_path, model_output_path='', processed=False, save=False):
     if processed:
-      (train_data, train_label) = load_train_data()
+      (train_data, train_label) = self.load_train_data()
     else:
-      (train_data, train_label) = parse_training_dataset(train_path)
-    train_model(list(train_data), train_label)
+      (train_data, train_label) = self.parse_training_dataset(train_path)
+    self.train_model(list(train_data), train_label)
+    if save:
+      self.save_model(model_output_path)
 
   def test_data(self, test_path, output_path):
     print 
     print 'testing...'
     start = time()
 
-    num_train = 1599860         # NOT create dev
     test_data = []
     test_label = []
     test_id = []
