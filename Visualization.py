@@ -6,16 +6,16 @@ from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 
 class Visualization:
-    def hotmap(popdensity):
+    def draw_hotmap(self, density):
       m = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
                   projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
       # draw state boundaries.
       # data from U.S Census Bureau
       # http://www.census.gov/geo/www/cob/st2000.html
-      shp_info = m.readshapefile('st99_d00','states',drawbounds=True)
+      shp_info = m.readshapefile('datasets/st99_d00','states',drawbounds=True)
       # population density by state from
       # http://en.wikipedia.org/wiki/List_of_U.S._states_by_population_density
-      popdensity = {
+      density = {
       'New Jersey':  438.00,
       'Rhode Island':   387.35,
       'Massachusetts':   312.68,
@@ -77,7 +77,7 @@ class Visualization:
         statename = shapedict['NAME']
         # skip DC and Puerto Rico.
         if statename not in ['District of Columbia','Puerto Rico']:
-          pop = popdensity[statename]
+          pop = density[statename]
           # calling colormap with value between 0 and 1 returns
           # rgba value.  Invert color range (hot colors are high
           # population), take sqrt root to spread out colors more.
@@ -96,3 +96,6 @@ class Visualization:
       m.drawmeridians(np.arange(-120,-40,20),labels=[0,0,0,1])
       plt.title('Filling State Polygons by Population Density')
       plt.show()
+
+tmp = Visualization()
+tmp.draw_hotmap(None)
