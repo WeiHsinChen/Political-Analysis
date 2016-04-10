@@ -74,7 +74,7 @@ class CategoryAnalysis:
       self.get_domain_dict()
 
     count_dict = {}
-    text_array = nltk.word_tokenize(text.strip().decode('iso-8859-1'))
+    text_array = nltk.word_tokenize(text.strip())
     stemmer = SnowballStemmer("english")
     # wordnet_lemmatizer = WordNetLemmatizer()
 
@@ -87,6 +87,7 @@ class CategoryAnalysis:
             count_dict[d] = 0
           count_dict[d] += 1
 
+    # Does not belong to any domain
     if len(count_dict) == 0:
       return ['Neu']
     else: 
@@ -102,6 +103,6 @@ class CategoryAnalysis:
       return max_domains
 
 
-tmp = CategoryAnalysis()
-# tmp.parse_raw_dict()
-print tmp.predict_domain("trump's social policy is stupid.")
+# tmp = CategoryAnalysis()
+# # tmp.parse_raw_dict()
+# print tmp.predict_domain("trump's social policy is stupid.")
