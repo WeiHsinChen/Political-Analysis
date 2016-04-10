@@ -1,0 +1,1 @@
+{"donald": {"New York": -3}, "kasich": {"New York": -4}, "cruz": {"New York": -6}, "hillary": {"New York": -8}, "bernie": {"New York": -2}}

@@ -122,17 +122,22 @@ class SentimentAnalysis:
     print "saving model: cost %f sec" % (time()-start)
 
   def load_model(self, model_input_path):
-    if self.clf == None:
-      self.train('./train_dataset/train.csv', model_output_path=model_input_path, processed=True, save=True)
+    print 
+    print 'loading model...'
+    start = time()
+    # if self.clf == None:
+    #   self.train('./datasets/train.csv', model_output_path=model_input_path, processed=True, save=True)
     self.clf = joblib.load(model_input_path) 
+
+    print "loading model: cost %f sec" % (time()-start)
 
   def load_train_data(self):
     print 
     print 'loading...'
     start = time()
 
-    train_data_path = 'train_data'
-    train_label_path = 'train_label'
+    train_data_path = './datasets/train_data'
+    train_label_path = './datasets/train_label'
     tmp1 = np.load(train_data_path)
     tmp2 = np.load(train_label_path)
 
@@ -198,4 +203,4 @@ class SentimentAnalysis:
 
 
 # sa = SentimentAnalysis()
-sa.train('./train_dataset/train.csv', model_output_path='model_NB.pkl', processed=True, save=True)
+# sa.train('./datasets/train.csv', model_output_path='model_NB.pkl', processed=False, save=True)
