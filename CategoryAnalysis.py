@@ -67,7 +67,7 @@ class CategoryAnalysis:
     self.domain_dict = res
 
   """
-    categorize text into 'His', 'Soc', 'Sci', 'Edu', 'Rel', 'Med', 'Law', 'Bus' or 'Neu' based on Naive Bayse 
+    categorize text into 'His', 'Soc', 'Sci', 'Edu', 'Rel', 'Med', 'Law', 'Bus' or 'Neu' based on generative model 
   """
   def predict_domain(self, text):
     if not self.domain_dict:

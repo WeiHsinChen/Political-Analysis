@@ -1,6 +1,9 @@
 from __future__ import print_function
 import numpy as np
+import matplotlib as mpl
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from mpl_toolkits.basemap import Basemap as Basemap
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
@@ -8,6 +11,8 @@ from matplotlib.patches import Polygon
 class Visualization:
   def __init__(self):
     self.density = None
+    self.density_scale = None
+    plt.figure()
 
   def init_hotmap(self):
     self.density = {
@@ -68,6 +73,9 @@ class Visualization:
       return 
     self.density[state] = float(value)
 
+  def ini_scale_hotmap(self, density_scale):
+    self.density_scale = density_scale
+
   def draw_hotmap(self, title, blue=True):
     m = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
                 projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
@@ -87,6 +95,13 @@ class Visualization:
       elif v < vmin:
         vmin = v
 
+    # normalize again if vmin < 0
+    # if vmin < 0:
+    #   for k, v in self.density.items():
+    #     self.density[k] -= vmin
+    #   vmax -= vmin
+    #   vmin = 0
+
     # choose a color for each state based on population density.
     colors={}
     statenames=[]
@@ -100,11 +115,11 @@ class Visualization:
       statename = shapedict['NAME']
       # skip DC and Puerto Rico.
       if statename not in ['District of Columbia','Puerto Rico']:
-        pop = self.density[statename]
+        den = self.density[statename]
         # calling colormap with value between 0 and 1 returns
         # rgba value.  Invert color range (hot colors are high
         # population), take sqrt root to spread out colors more.
-        colors[statename] = list(cmap(1.-np.sqrt((pop-vmin)/(vmax-vmin)))[:3])
+        colors[statename] = list(cmap(1.-np.sqrt((den-vmin)/(vmax-vmin)))[:3])
       statenames.append(statename)
     # cycle through state names, color each one.
     ax = plt.gca() # get current axes instance
@@ -118,7 +133,91 @@ class Visualization:
     m.drawparallels(np.arange(25,65,20),labels=[1,0,0,0])
     m.drawmeridians(np.arange(-120,-40,20),labels=[0,0,0,1])
     plt.title(title)
-    plt.show()
+    plt.draw()
+
+  def draw_candmap_scale(self, title):
+    m = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
+                projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
+    # draw state boundaries.
+    # data from U.S Census Bureau
+    # http://www.census.gov/geo/www/cob/st2000.html
+    shp_info = m.readshapefile('datasets/st99_d00','states',drawbounds=True)
+    # choose a color for each state based on population density.
+    colors={}
+    statenames=[]
+    cmap = plt.cm.seismic
+    norm = mpl.colors.Normalize(vmin=0, vmax=1)
+    msm = cm.ScalarMappable(norm=norm, cmap=cmap)
+    candidate1 = None
+    candidate2 = None
+    # print(m.states_info[0].keys())
+    for shapedict in m.states_info:
+      statename = shapedict['NAME']
+      statenames.append(statename)
+      # skip DC and Puerto Rico.
+      if statename not in ['District of Columbia','Puerto Rico']:
+        if statename not in self.density_scale:
+          colors[statename] = list(msm.to_rgba(0.5)[:3])
+          continue
+        den = self.density_scale[statename]
+
+        cand1 = None
+        cand2 = None
+        score1 = None
+        score2 = None
+        for c, s in den.items():
+          if cand1:
+            cand2 = c
+            score2 = s
+          else:
+            cand1 = c
+            score1 = s   
+
+        if not candidate1:
+          candidate1 = cand1
+
+        if not candidate2:
+          candidate2 = cand2
+
+        if not cand1:
+          colors[statename] = list(msm.to_rgba(0)[:3])          
+          continue
+        elif not cand2:
+          colors[statename] = list(msm.to_rgba(1)[:3])          
+          continue
+
+        delta = 0
+        if (score1 < 0) and (score2 < 0):
+            score1, score2 = score2, score1
+            score1 = -score1
+            score2 = -score2
+        if (score1 < 0) or (score2 < 0):
+            delta = -min(score1, score2)
+            
+        normalized_cand1 = float(score1 + delta)
+        normalized_cand2 = float(score2 + delta)
+
+        fraction_cand1 = normalized_cand1 / (normalized_cand1 + normalized_cand2)
+        fraction_cand2 = 1 - fraction_cand1
+        colors[statename] = list(msm.to_rgba(fraction_cand1)[:3])
+    # cycle through state names, color each one.
+    ax = plt.gca() # get current axes instance
+    for nshape,seg in enumerate(m.states):
+      # skip DC and Puerto Rico.
+      if statenames[nshape] not in ['District of Columbia','Puerto Rico']:
+        color = rgb2hex(colors[statenames[nshape]]) 
+        poly = Polygon(seg,facecolor=color,edgecolor=color)
+        ax.add_patch(poly)
+    # draw meridians and parallels.
+    m.drawparallels(np.arange(25,65,20),labels=[1,0,0,0])
+    m.drawmeridians(np.arange(-120,-40,20),labels=[0,0,0,1])
+    plt.title(title)
+    if candidate1:
+      red_patch = mpatches.Patch(color='r', label=candidate1)
+    if candidate2:
+      blue_patch = mpatches.Patch(color='b', label=candidate2)
+    plt.legend(handles=[blue_patch, red_patch])
+    plt.draw()
 
 
 

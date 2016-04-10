@@ -3,6 +3,7 @@ import json
 from SentimentAnalysis import SentimentAnalysis
 from CategoryAnalysis import CategoryAnalysis
 from Visualization import Visualization
+import matplotlib.pyplot as plt
 
 
 """
@@ -72,9 +73,9 @@ def summary_state_domain(tweets_data):
 
   return (res_state, res_domain)
 
-# TODO
 def parse_tweets():
-  tweets_data_path = 'datasets/sample_political_tweets.txt'
+  # tweets_data_path = 'datasets/test_political_tweets.txt.txt'
+  tweets_data_path = 'test_political_tweets.txt'
   tweets_data = []
   tweets_file = open(tweets_data_path, "r")
   for line in tweets_file:
@@ -100,17 +101,61 @@ def parse_tweets():
 
   print (sum_state, sum_domain)
 
-# TODO
 def visualize_tweet_by_state():
-  sum_data_path = 'datasets/sum_state.txt'
-  sum_data = []
-  tweets_file = open(sum_data_path, "r")
+  sum_state_path = 'datasets/sum_state.txt'
+  sum_state = []
+  tweets_file = open(sum_state_path, "r")
   for line in tweets_file:
     try:
-      sum_data = json.loads(line)
+      sum_state = json.loads(line)
     except:
       continue
-  print sum_data
+
+  gop = ['donald', 'trump', 'ted', 'cruz', 'kasich']
+  dem = ['hillary', 'clinton', 'bernie', 'sanders']
+  for candidate, dic in sum_state.items():
+    v = Visualization()
+    v.init_hotmap()
+    for state, vote in dic.items():
+      v.set_hotmap(state, vote)
+    v.draw_hotmap('Approval Ratings of ' + candidate + ' Based on States', blue=candidate in dem)
+  plt.show()
+
+# TODO: legend on graph
+def visualize_tweet_by_candidate_scale():
+  sum_state_path = 'datasets/sum_state.txt'
+  sum_state = []
+  tweets_file = open(sum_state_path, "r")
+  for line in tweets_file:
+    try:
+      sum_state = json.loads(line)
+    except:
+      continue
+
+  gop = ['donald', 'trump', 'ted', 'cruz']
+  dem = ['hillary', 'clinton', 'bernie', 'sanders']
+  gop_sum = {}
+  dem_sum = {}
+  for candidate, dic in sum_state.items():
+    if candidate in gop:
+      for state, vote in dic.items():
+        if state not in gop_sum:
+          gop_sum[state] = {}
+        gop_sum[state][candidate] = vote
+    elif candidate in dem:
+      for state, vote in dic.items():
+        if state not in dem_sum:
+          dem_sum[state] = {}
+        dem_sum[state][candidate] = vote
+
+  v1 = Visualization()
+  v1.ini_scale_hotmap(gop_sum)
+  v1.draw_candmap_scale('gop')
+  v2 = Visualization()
+  v2.ini_scale_hotmap(dem_sum)
+  v2.draw_candmap_scale('dem')
+  plt.show()
+
 
 # TODO
 def visualize_tweet_by_domain():
@@ -123,6 +168,7 @@ def visualize_tweet_by_domain():
     except:
       continue
   print sum_data
+
 
 # for test
 def check_tweet_on_sentiment():
@@ -137,4 +183,6 @@ def check_tweet_on_sentiment():
   for tweet in predicted_data:
     print (tweet['text'], tweet['sentiment'])
 
-check_tweet_on_sentiment()
+
+# parse_tweets()
+visualize_tweet_by_candidate_scale()
