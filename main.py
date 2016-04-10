@@ -3,7 +3,6 @@ import SentimentAnalysis
 import CategoryAnalysis
 import Visualization
 
-candidate_list
 
 def predict_sentiment(tweets_data):
   model_path = 'models/model_NB.pkl'
@@ -11,7 +10,6 @@ def predict_sentiment(tweets_data):
   sa.load_model(model_path)
   for tweet in tweets_data:
     tweet['sentiment'] = sa.predict_sentiment(tweet['text'])
-  # print tweets_data
 
 def predict_domain(tweets_data):
   ca = CategoryAnalysis()
