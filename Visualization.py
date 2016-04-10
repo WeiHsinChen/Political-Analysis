@@ -121,8 +121,8 @@ class Visualization:
     plt.show()
 
 
-# Test
 
+# Test
 density = {
   'New Jersey':  438.00,
   'Rhode Island':   387.35,
@@ -176,9 +176,8 @@ density = {
   'Alaska':     0.42
 }
 
-
-tmp = Visualization()
-tmp.init_hotmap()
-for k, v in density.items():
-  tmp.set_hotmap(k, v)
-tmp.draw_hotmap('politics prediction')
+# tmp = Visualization()
+# tmp.init_hotmap()
+# for k, v in density.items():
+#   tmp.set_hotmap(k, v)
+# tmp.draw_hotmap('politics prediction')

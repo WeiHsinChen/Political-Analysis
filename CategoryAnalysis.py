@@ -102,6 +102,6 @@ class CategoryAnalysis:
       return max_domains
 
 
-tmp = CategoryAnalysis()
-# tmp.parse_raw_dict()
-print tmp.predict_domain("trump's social policy is stupid.")
+# tmp = CategoryAnalysis()
+# # tmp.parse_raw_dict()
+# print tmp.predict_domain("trump's social policy is stupid.")

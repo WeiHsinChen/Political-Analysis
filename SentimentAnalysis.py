@@ -15,6 +15,7 @@ from sklearn.feature_selection import SelectKBest, chi2
 
 # model
 from sklearn.svm import LinearSVC
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.externals import joblib
 
 # error report
@@ -98,8 +99,9 @@ class SentimentAnalysis:
     clf_tmp = Pipeline([('vect', CountVectorizer(ngram_range=(1,3))), 
         ('tfidf', TfidfTransformer(use_idf=True)),
         # ('feaSel',  SelectKBest(chi2, k=12000000)),
-        ('feaSel',  SelectKBest(chi2, k=num_feature*0.7)),
-        ('clf', LinearSVC())])
+        # ('feaSel',  SelectKBest(chi2, k=num_feature*0.7)),
+        # ('clf', LinearSVC())])
+        ('clf', MultinomialNB())])
 
     self.clf = clf_tmp.fit(train_data, train_label)
     train_predict = self.clf.predict(train_data)
@@ -118,6 +120,11 @@ class SentimentAnalysis:
     joblib.dump(self.clf, model_output_path) 
 
     print "saving model: cost %f sec" % (time()-start)
+
+  def load_model(self, model_input_path):
+    if self.clf == None:
+      self.train('./train_dataset/train.csv', model_output_path=model_input_path, processed=True, save=True)
+    self.clf = joblib.load(model_input_path) 
 
   def load_train_data(self):
     print 
@@ -185,3 +192,10 @@ class SentimentAnalysis:
     output_file.close()
 
     print "testing data: cost %f sec" % (time()-start)
+
+  def predict_sentiment(self, text):
+    return self.clf.predict([text])[0]
+
+
+# sa = SentimentAnalysis()
+sa.train('./train_dataset/train.csv', model_output_path='model_NB.pkl', processed=True, save=True)
