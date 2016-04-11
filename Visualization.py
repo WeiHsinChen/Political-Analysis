@@ -12,7 +12,6 @@ class Visualization:
   def __init__(self):
     self.density = None
     self.density_scale = None
-    plt.figure()
 
   def init_hotmap(self):
     self.density = {
@@ -77,6 +76,7 @@ class Visualization:
     self.density_scale = density_scale
 
   def draw_hotmap(self, title, blue=True):
+    plt.figure()
     m = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
                 projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
     # draw state boundaries.
@@ -136,6 +136,7 @@ class Visualization:
     plt.draw()
 
   def draw_candmap_scale(self, title):
+    plt.figure()
     m = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
                 projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
     # draw state boundaries.
@@ -219,6 +220,22 @@ class Visualization:
     plt.legend(handles=[blue_patch, red_patch])
     plt.draw()
 
+  def draw_domain_histogram(self, sum_domain):
+    x_axis = ['Education', 'Law and political science', 'Social Topics', 'Philosophy', 'Science and technology', 'Medicine and health', 'Business and finance']
+    abbre = ['Edu', 'Law', 'Soc', 'Rel', 'Sci', 'Med', 'Fin']
+  
+    for can, dic in sum_domain.items():
+      tmp = []
+      for d in abbre:
+        if d in dic:
+          tmp.append(dic[d])
+        else:
+          tmp.append(0)
+      plt.figure()
+      plt.bar(range(len(tmp)), tmp, align='center')
+      plt.xticks(range(len(tmp)), x_axis, size='small')
+      plt.title(can)
+      plt.draw()
 
 
 # Test

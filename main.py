@@ -75,20 +75,23 @@ def summary_state_domain(tweets_data):
 
 def parse_tweets():
   # tweets_data_path = 'datasets/test_political_tweets.txt.txt'
-  tweets_data_path = 'test_political_tweets.txt'
+  tweets_data_path = 'datasets/predicted_tweet.txt'
   tweets_data = []
   tweets_file = open(tweets_data_path, "r")
   for line in tweets_file:
     try:
+      # tweets_data = json.loads(line)[0]
+      # print tweets_data
       tweet = json.loads(line)
       tweets_data.append(tweet)
     except:
       continue
 
-  predict_sentiment(tweets_data)
-  predict_domain(tweets_data)
-  with open('datasets/predicted_tweet.txt', 'w') as outfile:
-    json.dump(tweets_data, outfile)
+  # predict_sentiment(tweets_data)
+  # predict_domain(tweets_data)
+
+  # with open('datasets/predicted_tweet.txt', 'w') as outfile:
+  #   json.dump(tweets_data, outfile)
 
   # check what format of file is, based on state or based on candidate
   (sum_state, sum_domain) = summary_state_domain(tweets_data)
@@ -99,7 +102,6 @@ def parse_tweets():
   with open('datasets/sum_domain.txt', 'w') as outfile:
     json.dump(sum_domain, outfile)
 
-  print (sum_state, sum_domain)
 
 def visualize_tweet_by_state():
   sum_state_path = 'datasets/sum_state.txt'
@@ -119,7 +121,6 @@ def visualize_tweet_by_state():
     for state, vote in dic.items():
       v.set_hotmap(state, vote)
     v.draw_hotmap('Approval Ratings of ' + candidate + ' Based on States', blue=candidate in dem)
-  plt.show()
 
 # TODO: legend on graph
 def visualize_tweet_by_candidate_scale():
@@ -154,21 +155,23 @@ def visualize_tweet_by_candidate_scale():
   v2 = Visualization()
   v2.ini_scale_hotmap(dem_sum)
   v2.draw_candmap_scale('dem')
-  plt.show()
 
 
 # TODO
 def visualize_tweet_by_domain():
-  sum_data_path = 'datasets/sum_domain.txt'
-  sum_data = []
-  tweets_file = open(sum_data_path, "r")
+  sum_domain_path = 'datasets/sum_domain.txt'
+  sum_domain = []
+  tweets_file = open(sum_domain_path, "r")
   for line in tweets_file:
     try:
-      sum_data = json.loads(line)
+      sum_domain = json.loads(line)
     except:
       continue
-  print sum_data
+  v = Visualization()
+  v.draw_domain_histogram(sum_domain)
 
+def show_figure():
+  plt.show()
 
 # for test
 def check_tweet_on_sentiment():
@@ -184,5 +187,10 @@ def check_tweet_on_sentiment():
     print (tweet['text'], tweet['sentiment'])
 
 
-# parse_tweets()
-visualize_tweet_by_candidate_scale()
+def main():
+  parse_tweets()
+  visualize_tweet_by_candidate_scale()
+  visualize_tweet_by_domain()
+  show_figure()
+
+main()
