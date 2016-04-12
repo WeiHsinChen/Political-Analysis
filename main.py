@@ -8,11 +8,14 @@ import matplotlib.pyplot as plt
 
 
 
-"""
-  function: predict the sentiment based on text and add a new
-            column 'sentiment' on original tweet
-"""
+
 def predict_sentiment(tweets_data):
+  """ 
+    Predict the sentiment based on text and add a new
+    column 'sentiment' on original tweet
+
+    :param tweets_data: an array of raw tweets
+  """
   # print 
   # print 'predicting sentiment...'
   start = time()
@@ -26,11 +29,13 @@ def predict_sentiment(tweets_data):
   # print "predicting sentiment: cost %f sec" % (time()-start)
 
 
-"""
-  function: predict the domain based on text and add a new
-            column 'domain' on original tweet
-"""
 def predict_domain(tweets_data):
+  """ 
+    Predict the domain based on text and add a new
+    column 'sentiment' on original tweet
+
+    :param tweets_data: an array of raw tweets
+  """
   # print 
   # print 'predicting domain...'
   start = time()
@@ -41,10 +46,12 @@ def predict_domain(tweets_data):
 
   # print "predicting domain: cost %f sec" % (time()-start)
 
-"""
-  function: summarize the processed tweets based on sentiment and domain
-"""
 def summary_state_domain(tweets_data):
+  """ 
+    Summarize the processed tweets based on sentiment and domain
+
+    :param tweets_data: an array of raw tweets
+  """
   res_state = {}
   res_domain = {}
 
@@ -76,6 +83,9 @@ def summary_state_domain(tweets_data):
   return (res_state, res_domain)
 
 def parse_tweets():
+  """ 
+    Parse and summarize the processed tweets 
+  """
   # tweets_data_path = 'datasets/test_political_tweets.txt.txt'
   tweets_data_path = 'datasets/predicted_tweet.txt'
   tweets_data = []
@@ -111,6 +121,9 @@ def parse_tweets():
 
 
 def visualize_tweet_by_state():
+  """ 
+    Visualize the processed tweets based on the count of votes in each state.
+  """
   sum_state_path = 'datasets/sum_state.txt'
   sum_state = []
   tweets_file = open(sum_state_path, "r")
@@ -129,8 +142,10 @@ def visualize_tweet_by_state():
       v.set_hotmap(state, vote)
     v.draw_hotmap('Approval Ratings of ' + candidate + ' Based on States', blue=candidate in dem)
 
-# TODO: legend on graph
 def visualize_tweet_by_candidate_scale():
+  """ 
+    Visualize the processed tweets based on the difference of votes between two candidates.
+  """
   sum_state_path = 'datasets/sum_state.txt'
   sum_state = []
   tweets_file = open(sum_state_path, "r")
@@ -140,8 +155,8 @@ def visualize_tweet_by_candidate_scale():
     except:
       continue
 
-  gop = ['donald', 'trump', 'ted', 'cruz']
-  dem = ['hillary', 'clinton', 'bernie', 'sanders']
+  gop = ['donald', 'cruz']
+  dem = ['hillary', 'bernie']
   gop_sum = {}
   dem_sum = {}
   for candidate, dic in sum_state.items():
@@ -150,11 +165,22 @@ def visualize_tweet_by_candidate_scale():
         if state not in gop_sum:
           gop_sum[state] = {}
         gop_sum[state][candidate] = vote
+        # initialize other candidate
+        if candidate == gop[0]:
+          gop_sum[state][gop[1]] = 0 if gop[1] not in gop_sum[state] else gop_sum[state][gop[1]]
+        else:
+          gop_sum[state][gop[0]] = 0 if gop[0] not in gop_sum[state] else gop_sum[state][gop[0]]
     elif candidate in dem:
       for state, vote in dic.items():
         if state not in dem_sum:
           dem_sum[state] = {}
         dem_sum[state][candidate] = vote
+        # initialize other candidate
+        if candidate == dem[0]:
+          dem_sum[state][dem[1]] = 0 if dem[1] not in dem_sum[state] else dem_sum[state][dem[1]]
+        else:
+          dem_sum[state][dem[0]] = 0 if dem[0] not in dem_sum[state] else dem_sum[state][dem[0]]
+
 
   v1 = Visualization()
   v1.ini_scale_hotmap(gop_sum)
@@ -164,8 +190,10 @@ def visualize_tweet_by_candidate_scale():
   v2.draw_candmap_scale('dem')
 
 
-# TODO
 def visualize_tweet_by_domain():
+  """ 
+    Visualize the processed tweets based on domain.
+  """
   sum_domain_path = 'datasets/sum_domain.txt'
   sum_domain = []
   tweets_file = open(sum_domain_path, "r")
@@ -178,10 +206,16 @@ def visualize_tweet_by_domain():
   v.draw_domain_histogram(sum_domain)
 
 def show_figure():
+  """ 
+    Show all figures the system draw so far.
+  """
   plt.show()
 
 # for test
 def check_tweet_on_sentiment():
+  """ 
+    Print the text and sentiment of all tweets.
+  """
   predicted_data_path = 'datasets/predicted_tweet.txt'
   predicted_data = []
   tweets_file = open(predicted_data_path, "r")
@@ -190,8 +224,8 @@ def check_tweet_on_sentiment():
       predicted_data = json.loads(line)
     except:
       continue
-  # for tweet in predicted_data:
-    # print (tweet['text'], tweet['sentiment'])
+  for tweet in predicted_data:
+    print (tweet['text'], tweet['sentiment'])
 
 
 if __name__ == '__main__':

@@ -8,12 +8,25 @@ from mpl_toolkits.basemap import Basemap as Basemap
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 
+
 class Visualization:
+  """
+
+  Visualization module is used to visualize processed datasets on 
+  map and histogram.
+
+  """
   def __init__(self):
+    """
+    Construct a new 'Visualization' object.
+    """
     self.density = None
     self.density_scale = None
 
   def init_hotmap(self):
+    """ 
+    Initialize density for hotmap.
+    """
     self.density = {
       'New Jersey':  0.0,
       'Rhode Island':   0.0,
@@ -68,14 +81,31 @@ class Visualization:
     }
 
   def set_hotmap(self, state, value):
+    """ 
+    Set a new pesudo vote on a state.
+
+    :param state: The name of state
+    :param value: The count of pseudo vote on this state
+    """
     if state not in self.density:
       return 
     self.density[state] = float(value)
 
   def ini_scale_hotmap(self, density_scale):
+    """ 
+    Initial density for candmap_scale.
+
+    :param density_scale: The initial density
+    """
     self.density_scale = density_scale
 
   def draw_hotmap(self, title, blue=True):
+    """ 
+    Draw a hotmap based on the counts of pseudo vote on each state.
+
+    :param title: The title of the hotmao
+    :param blue: The choosed color, True for blue and False for red.
+    """
     plt.figure()
     m = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
                 projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
@@ -136,6 +166,11 @@ class Visualization:
     plt.draw()
 
   def draw_candmap_scale(self, title):
+    """ 
+    Draw a scale hotmap based on the difference of votes between two candidates.
+
+    :param title: The title of scale hotmap
+    """
     plt.figure()
     m = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
                 projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
@@ -194,6 +229,9 @@ class Visualization:
             score2 = -score2
         if (score1 < 0) or (score2 < 0):
             delta = -min(score1, score2)
+        if (score1 == 0 and score2 == 0):
+          colors[statename] = list(msm.to_rgba(0.5)[:3])
+          continue
             
         normalized_cand1 = float(score1 + delta)
         normalized_cand2 = float(score2 + delta)
@@ -221,8 +259,13 @@ class Visualization:
     plt.draw()
 
   def draw_domain_histogram(self, sum_domain):
-    x_axis = ['Education', 'Law and political science', 'Social Topics', 'Philosophy', 'Science and technology', 'Medicine and health', 'Business and finance']
-    abbre = ['Edu', 'Law', 'Soc', 'Rel', 'Sci', 'Med', 'Fin']
+    """ 
+    Draw histogram based on the counts of domain.
+
+    :param sum_domain: The summary of domain information for each candidate
+    """
+    x_axis = ['Economic Issues', 'Health Care', 'Education',  'Social Issues']
+    abbre = ['Fin', 'Med', 'Edu', 'Soc']
   
     for can, dic in sum_domain.items():
       tmp = []
@@ -239,58 +282,58 @@ class Visualization:
 
 
 # Test
-density = {
-  'New Jersey':  438.00,
-  'Rhode Island':   387.35,
-  'Massachusetts':   312.68,
-  'Connecticut':    271.40,
-  'Maryland':   209.23,
-  'New York':    155.18,
-  'Delaware':    154.87,
-  'Florida':     114.43,
-  'Ohio':  107.05,
-  'Pennsylvania':  105.80,
-  'Illinois':    86.27,
-  'California':  83.85,
-  'Hawaii':  72.83,
-  'Virginia':    69.03,
-  'Michigan':    67.55,
-  'Indiana':    65.46,
-  'North Carolina':  63.80,
-  'Georgia':     54.59,
-  'Tennessee':   53.29,
-  'New Hampshire':   53.20,
-  'South Carolina':  51.45,
-  'Louisiana':   39.61,
-  'Kentucky':   39.28,
-  'Wisconsin':  38.13,
-  'Washington':  34.20,
-  'Alabama':     33.84,
-  'Missouri':    31.36,
-  'Texas':   30.75,
-  'West Virginia':   29.00,
-  'Vermont':     25.41,
-  'Minnesota':  23.86,
-  'Mississippi':   23.42,
-  'Iowa':  20.22,
-  'Arkansas':    19.82,
-  'Oklahoma':    19.40,
-  'Arizona':     17.43,
-  'Colorado':    16.01,
-  'Maine':  15.95,
-  'Oregon':  13.76,
-  'Kansas':  12.69,
-  'Utah':  10.50,
-  'Nebraska':    8.60,
-  'Nevada':  7.03,
-  'Idaho':   6.04,
-  'New Mexico':  5.79,
-  'South Dakota':  3.84,
-  'North Dakota':  3.59,
-  'Montana':     2.39,
-  'Wyoming':      1.96,
-  'Alaska':     0.42
-}
+# density = {
+#   'New Jersey':  438.00,
+#   'Rhode Island':   387.35,
+#   'Massachusetts':   312.68,
+#   'Connecticut':    271.40,
+#   'Maryland':   209.23,
+#   'New York':    155.18,
+#   'Delaware':    154.87,
+#   'Florida':     114.43,
+#   'Ohio':  107.05,
+#   'Pennsylvania':  105.80,
+#   'Illinois':    86.27,
+#   'California':  83.85,
+#   'Hawaii':  72.83,
+#   'Virginia':    69.03,
+#   'Michigan':    67.55,
+#   'Indiana':    65.46,
+#   'North Carolina':  63.80,
+#   'Georgia':     54.59,
+#   'Tennessee':   53.29,
+#   'New Hampshire':   53.20,
+#   'South Carolina':  51.45,
+#   'Louisiana':   39.61,
+#   'Kentucky':   39.28,
+#   'Wisconsin':  38.13,
+#   'Washington':  34.20,
+#   'Alabama':     33.84,
+#   'Missouri':    31.36,
+#   'Texas':   30.75,
+#   'West Virginia':   29.00,
+#   'Vermont':     25.41,
+#   'Minnesota':  23.86,
+#   'Mississippi':   23.42,
+#   'Iowa':  20.22,
+#   'Arkansas':    19.82,
+#   'Oklahoma':    19.40,
+#   'Arizona':     17.43,
+#   'Colorado':    16.01,
+#   'Maine':  15.95,
+#   'Oregon':  13.76,
+#   'Kansas':  12.69,
+#   'Utah':  10.50,
+#   'Nebraska':    8.60,
+#   'Nevada':  7.03,
+#   'Idaho':   6.04,
+#   'New Mexico':  5.79,
+#   'South Dakota':  3.84,
+#   'North Dakota':  3.59,
+#   'Montana':     2.39,
+#   'Wyoming':      1.96,
+#   'Alaska':     0.42
+# }
 
 # tmp = Visualization()
 # tmp.init_hotmap()

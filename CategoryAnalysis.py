@@ -7,8 +7,14 @@ from openpyxl import load_workbook
 
 class CategoryAnalysis:
   def __init__(self):
+    """
+    Construct a new 'CategoryAnalysis' object.
+    """
     self.domain_dict = None
   def parse_raw_dict(self):
+    """ 
+    Parse all words in Academic Vocabulary Lists and extract keywords for each domain.
+    """
     fName = "datasets/allWords.xlsx"
     wb = load_workbook(filename = fName)
     ws = wb.get_sheet_by_name("list")
@@ -50,6 +56,9 @@ class CategoryAnalysis:
     wb_res.save('datasets/domain_dict.xlsx')
 
   def get_domain_dict(self):
+    """ 
+    Parse keywords of each domain from xlsx files.
+    """
     res = {}
     fName = "datasets/domain_dict.xlsx"
     wb = load_workbook(filename = fName)
@@ -66,10 +75,13 @@ class CategoryAnalysis:
 
     self.domain_dict = res
 
-  """
-    categorize text into 'His', 'Soc', 'Sci', 'Edu', 'Rel', 'Med', 'Law', 'Bus' or 'Neu' based on generative model 
-  """
   def predict_domain(self, text):
+    """
+    Predict domain of a new tweet.
+
+    :param text: The text of the tweet
+    :return: The domain of the tweet, categorize text into 'His', 'Soc', 'Sci', 'Edu', 'Rel', 'Med', 'Law', 'Bus' or 'Neu' based on generative model 
+    """
     if not self.domain_dict:
       self.get_domain_dict()
 

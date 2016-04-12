@@ -29,27 +29,24 @@ from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import WordNetLemmatizer 
 
 
-class LemmaTokenizer(object):
-  def __init__(self):
-    self.wnl = WordNetLemmatizer()
-  def __call__(self, doc):
-    return [self.wnl.lemmatize(t) for t in word_tokenize(doc)]
-
-class DenseTransformer(TransformerMixin):
-  def transform(self, X, y=None, **fit_params):
-    # return X.todense()
-    return X.toarray()
-  def fit_transform(self, X, y=None, **fit_params):
-    self.fit(X, y, **fit_params)
-    return self.transform(X)
-  def fit(self, X, y=None, **fit_params):
-    return self
-
 class SentimentAnalysis:
+  """
+
+  SentimentAnalysis module is used to analyze the sentiment of tweets
+
+  """
   def __init__(self):
+    """
+    Construct a new 'SentimentAnalysis' object.
+    """
     self.clf = None
 
   def parse_training_dataset(self, train_path):
+    """ 
+    Process a raw training dataset, e.g. tokenization and lemmatization.
+
+    :param train_path: the path of a raw training dataset
+    """
     print 
     print 'parsing...'
     start = time()
@@ -91,6 +88,12 @@ class SentimentAnalysis:
     return (train_data, train_label)
 
   def train_model(self, train_data, train_label):
+    """ 
+    Save an already trained model
+
+    :param train_data: the path of a processed dataset 
+    :param train_label: the path of a label dataset for the processed dataset
+    """
     print 
     print 'training...'
     start = time()
@@ -113,6 +116,11 @@ class SentimentAnalysis:
     print "training: cost %f sec" % (time()-start)
 
   def save_model(self, model_output_path):
+    """ 
+    Save an already trained model
+
+    :param model_output_path: the path of a model for analysis
+    """
     print 
     print 'saving model...'
     start = time()
@@ -122,6 +130,11 @@ class SentimentAnalysis:
     print "saving model: cost %f sec" % (time()-start)
 
   def load_model(self, model_input_path):
+    """ 
+    Load an already trained model
+
+    :param model_input_path: the path of a model for analysis
+    """
     print 
     print 'loading model...'
     start = time()
@@ -132,6 +145,9 @@ class SentimentAnalysis:
     print "loading model: cost %f sec" % (time()-start)
 
   def load_train_data(self):
+    """ 
+    Load an already processed training dataset
+    """
     print 
     print 'loading...'
     start = time()
@@ -145,6 +161,14 @@ class SentimentAnalysis:
     return (tmp1, tmp2)
 
   def train(self, train_path, model_output_path='', processed=False, save=False):
+    """ 
+    Train the model for sentiment analysis.
+
+    :param train_path: the path of a training dataset
+    :param model_output_path: the path of the output model
+    :param processed: does it need to re-process training dataset or not
+    :param save: does it need to save the model or not
+    """
     if processed:
       (train_data, train_label) = self.load_train_data()
     else:
@@ -154,6 +178,12 @@ class SentimentAnalysis:
       self.save_model(model_output_path)
 
   def test_data(self, test_path, output_path):
+    """ 
+    Predict sentiment of a bunch of tweets.
+
+    :param test_path: the path of a test dataset
+    :param output_path: the path of output file 
+    """
     print 
     print 'testing...'
     start = time()
@@ -199,6 +229,12 @@ class SentimentAnalysis:
     print "testing data: cost %f sec" % (time()-start)
 
   def predict_sentiment(self, text):
+    """ 
+    Predict sentiment of a new tweet.
+
+    :param text: The text of the tweet
+    :return: The sentiment of the tweet, 4 means positive and 0 means negative
+    """
     return self.clf.predict([text])[0]
 
 
