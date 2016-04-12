@@ -9,6 +9,9 @@ from tweepy import Stream
 from twitter_location_query import get_state_bounding_boxes
 import json
 import time
+import ssl
+import random
+ssl._create_default_https_context = ssl._create_unverified_context
 
 # Given list of candidates names, returns name of candidate if 
 # tweet is exclusively about them, else returns []
@@ -33,10 +36,15 @@ def tweet_contains_exclusive_candidate(tweet, candidates_names_list):
         return candidate_name[:2]
 
 #Variables that contains the user credentials to access Twitter API 
-access_token = "713016345793835009-itRGPior5WpiMa5ELRXpGuC4CrJBJmc"
-access_token_secret = "tuxDyQVxU7IdHsJrDsi1Xn9JbDjKwTjglWR5kq7MU9SNA"
-consumer_key = "FVL7UVGuBSy9IwRfrDuGd5GQP"
-consumer_secret = "5m5JkSZkMvTdUZmZ7wXcCM62Cr4S6Qx7wwK0w2pVE0zAjk7NJK"
+# access_token = "713016345793835009-itRGPior5WpiMa5ELRXpGuC4CrJBJmc"
+# access_token_secret = "tuxDyQVxU7IdHsJrDsi1Xn9JbDjKwTjglWR5kq7MU9SNA"
+# consumer_key = "FVL7UVGuBSy9IwRfrDuGd5GQP"
+# consumer_secret = "5m5JkSZkMvTdUZmZ7wXcCM62Cr4S6Qx7wwK0w2pVE0zAjk7NJK"
+ 
+access_token = "3519287422-aEIFkrNSPrk3YBVCdDoIPERBRQbgAT2paQOvmSy"
+access_token_secret = "6HgbwAAnYglKHDCyLDCMwkmiRcOLqI1nMXrOdA0luYaSX"
+consumer_key = "TXk7hUXZukYDhqDNl6bT6lJwv"
+consumer_secret = "LOnkZSNAWIHcbFdbGB50uvpoTh8qeYWILEXNT695IFDOBcrpv9"
 
 cur_num_tweets = 0
 max_num_tweets = 100
@@ -85,7 +93,7 @@ for argument in arguments:
 
 from SentimentAnalysis import SentimentAnalysis
 from CategoryAnalysis import CategoryAnalysis
-model_path = 'models.model_NB.pkl'
+model_path = 'models/model_NB.pkl'
 sa = SentimentAnalysis()
 ca = CategoryAnalysis()
 if run_real_time == True:
@@ -122,7 +130,7 @@ class StdOutListener(StreamListener):
 
 
         cur_num_tweets += 1
-        print(cur_num_tweets)
+        print(cur_state, cur_num_tweets)
         if cur_num_tweets == max_num_tweets:
             return False
         return True
@@ -147,28 +155,27 @@ if __name__ == '__main__':
     states = \
     ['California', 'Texas', 'Florida', 'New York', 'Illinois', 'Pennsylvania', 'Ohio', 'Georgia', 'North Carolina', 'Michigan', 'New Jersey', 'Virginia', 'Washington', 'Arizona', 'Massachusetts', 'Indiana', 'Tennessee', 'Missouri', 'Maryland', 'Wisconsin', 'Minnesota', 'Colorado', 'South Carolina', 'Alabama', 'Louisiana', 'Kentucky', 'Oregon', 'Oklahoma', 'Connecticut', 'Iowa', 'Utah', 'Mississippi', 'Arkansas', 'Kansas', 'Nevada', 'New Mexico', 'Nebraska', 'West Virginia', 'Idaho', 'Hawaii', 'New Hampshire', 'Maine', 'Rhode Island', 'Montana', 'Delaware', 'South Dakota', 'North Dakota', 'Alaska', 'Vermont', 'Wyoming']
 
-    #state_bounding_boxes_dict = {
+    # states = []
+    # state_bounding_boxes_dict = {
     #'Massachussetts':[-73.508143, 41.187054, -69.858861, 42.8868241]}
     #'Michigan':[-90.4181075, 41.696088, -82.122971, 48.306272]}
     #'Wyoming':[-111.056888, 40.994746, -104.052236, 45.005904]}
-    #'New York':[-79.76259, 40.477383, -71.777492, 45.015851]}
+    # 'New York':[-79.76259, 40.477383, -71.777492, 45.015851]}
     #'California':[-124.482003, 32.528832, -114.131212, 42.009519]}
 
     #This line filter Twitter Streams to capture data by the keywords
     #stream.filter(track=candidates_filter)
     #This line filter Twitter Streams to capture data by state
 
-    for state in states:
+    while True:
+        state = random.choice(states)
         cur_state = state
         state_bounding_box = state_bounding_boxes_dict[state]
         # convert to integers
         print(cur_state)
         initial_time = time.time()
-        try:
-            stream.filter(locations=state_bounding_box)
-        except:
-            print('Error with ' + cur_state)
-        output_file.close()
+        stream.filter(locations=state_bounding_box)
+        # output_file.close()
         #stream.filter(track=candidates_keywords)
         # reset count
         if run_real_time == True:
@@ -176,4 +183,5 @@ if __name__ == '__main__':
                 map_process.terminate()
             map_process = Popen(['python', 'main.py'])
         cur_num_tweets = 0
+
     

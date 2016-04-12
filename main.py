@@ -1,3 +1,4 @@
+from __future__ import print_function
 from time import time
 import json
 from SentimentAnalysis import SentimentAnalysis
@@ -6,13 +7,14 @@ from Visualization import Visualization
 import matplotlib.pyplot as plt
 
 
+
 """
   function: predict the sentiment based on text and add a new
             column 'sentiment' on original tweet
 """
 def predict_sentiment(tweets_data):
-  print 
-  print 'predicting sentiment...'
+  # print 
+  # print 'predicting sentiment...'
   start = time()
 
   model_path = 'models/model_NB.pkl'
@@ -21,7 +23,7 @@ def predict_sentiment(tweets_data):
   for tweet in tweets_data:
     tweet['sentiment'] = sa.predict_sentiment(tweet['text'])
 
-  print "predicting sentiment: cost %f sec" % (time()-start)
+  # print "predicting sentiment: cost %f sec" % (time()-start)
 
 
 """
@@ -29,15 +31,15 @@ def predict_sentiment(tweets_data):
             column 'domain' on original tweet
 """
 def predict_domain(tweets_data):
-  print 
-  print 'predicting domain...'
+  # print 
+  # print 'predicting domain...'
   start = time()
 
   ca = CategoryAnalysis()
   for tweet in tweets_data:
     tweet['domain'] = ca.predict_domain(tweet['text'])
 
-  print "predicting domain: cost %f sec" % (time()-start)
+  # print "predicting domain: cost %f sec" % (time()-start)
 
 """
   function: summarize the processed tweets based on sentiment and domain
@@ -87,6 +89,10 @@ def parse_tweets():
     except:
       continue
 
+  # for tweet in tweets_data:
+  #   print(json.dumps(tweet),file=tweets_file)
+
+
   # predict_sentiment(tweets_data)
   # predict_domain(tweets_data)
 
@@ -94,6 +100,7 @@ def parse_tweets():
   #   json.dump(tweets_data, outfile)
 
   # check what format of file is, based on state or based on candidate
+
   (sum_state, sum_domain) = summary_state_domain(tweets_data)
 
   with open('datasets/sum_state.txt', 'w') as outfile:
@@ -183,14 +190,13 @@ def check_tweet_on_sentiment():
       predicted_data = json.loads(line)
     except:
       continue
-  for tweet in predicted_data:
-    print (tweet['text'], tweet['sentiment'])
+  # for tweet in predicted_data:
+    # print (tweet['text'], tweet['sentiment'])
 
 
-def main():
+if __name__ == '__main__':
   parse_tweets()
   visualize_tweet_by_candidate_scale()
   visualize_tweet_by_domain()
   show_figure()
 
-main()
