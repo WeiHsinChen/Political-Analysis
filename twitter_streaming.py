@@ -48,10 +48,10 @@ consumer_secret = "LOnkZSNAWIHcbFdbGB50uvpoTh8qeYWILEXNT695IFDOBcrpv9"
 
 cur_num_tweets = 0
 max_num_tweets = 100
+min_limit = 30
 
 use_timer = True
 initial_time = 0
-time_limit = 60 * 30
 
 # state being currently filtered
 cur_state = ''
@@ -88,8 +88,12 @@ for argument in arguments:
             candidates_filter = dem_candidates
         elif argument in ["all", "both"]:
             candidates_filter = gop_candidates + dem_candidates
-        elif argument in ["realtime"]:
+        elif argument == "realtime":
             run_real_time = True
+        elif 'min' in argument:
+            argument = argument.strip('min')
+            min_limit = int(argument)
+time_limit = 60 * min_limit
 
 from SentimentAnalysis import SentimentAnalysis
 from CategoryAnalysis import CategoryAnalysis
