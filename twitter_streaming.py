@@ -95,6 +95,11 @@ for argument in arguments:
             min_limit = int(argument)
 time_limit = 60 * min_limit
 
+if run_real_time == True:
+    if map_process != None:
+        map_process.terminate()
+    map_process = Popen(['python', 'main.py'])    
+
 from SentimentAnalysis import SentimentAnalysis
 from CategoryAnalysis import CategoryAnalysis
 model_path = 'models/model_NB.pkl'
