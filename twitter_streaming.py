@@ -192,6 +192,7 @@ def main():
     #This line filter Twitter Streams to capture data by the keywords
     #stream.filter(track=candidates_filter)
     #This line filter Twitter Streams to capture data by state
+    global initial_time, cur_state, cur_num_tweets, max_num_tweets, output_file, map_process
 
     while True:
         state = random.choice(states)
