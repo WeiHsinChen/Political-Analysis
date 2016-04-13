@@ -95,6 +95,8 @@ for argument in arguments:
             min_limit = int(argument)
 time_limit = 60 * min_limit
 
+from subprocess import Popen, PIPE    
+map_process = None
 if run_real_time == True:
     if map_process != None:
         map_process.terminate()
@@ -107,8 +109,6 @@ sa = SentimentAnalysis()
 ca = CategoryAnalysis()
 if run_real_time == True:
     sa.load_model(model_path)
-from subprocess import Popen, PIPE    
-map_process = None
 
 #This is a basic listener that just prints received tweets to stdout.
 class StdOutListener(StreamListener):
