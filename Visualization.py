@@ -276,6 +276,9 @@ class Visualization:
       plt.bar(range(len(tmp)), tmp, align='center')
       plt.xticks(range(len(tmp)), x_axis, size='small')
       plt.title(can)
+      plt.ylabel('# of sentiment votes')
+      axes = plt.gca()
+      axes.set_ylim([-70,60])
       plt.draw()
 
 

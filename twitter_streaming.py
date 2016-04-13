@@ -130,7 +130,7 @@ class StdOutListener(StreamListener):
 
 
         cur_num_tweets += 1
-        print(cur_state, cur_num_tweets)
+        print("# of tweets collected in", cur_state, ":", cur_num_tweets)
         if cur_num_tweets == max_num_tweets:
             return False
         return True
@@ -139,7 +139,7 @@ class StdOutListener(StreamListener):
         print(status)
 
 
-if __name__ == '__main__':
+def main():
     #This handles Twitter authetification and the connection to Twitter Streaming API
     l = StdOutListener()
     auth = OAuthHandler(consumer_key, consumer_secret)
@@ -184,4 +184,4 @@ if __name__ == '__main__':
             map_process = Popen(['python', 'main.py'])
         cur_num_tweets = 0
 
-    
+main()    

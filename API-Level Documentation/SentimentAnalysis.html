@@ -1,0 +1,99 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module SentimentAnalysis</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>SentimentAnalysis</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="../SentimentAnalysis.py">Source code of SentimentAnalysis.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="csv.html">csv</a><br>
+<a href="sklearn.datasets.html">sklearn.datasets</a><br>
+</td><td width="25%" valign=top><a href="sklearn.externals.joblib.html">sklearn.externals.joblib</a><br>
+<a href="nltk.html">nltk</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+<a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="string.html">string</a><br>
+<a href="sys.html">sys</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="SentimentAnalysis.html#SentimentAnalysis">SentimentAnalysis</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="SentimentAnalysis">class <strong>SentimentAnalysis</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#SentimentAnalysis">SentimentAnalysis</a>&nbsp;module&nbsp;is&nbsp;used&nbsp;to&nbsp;analyze&nbsp;the&nbsp;sentiment&nbsp;of&nbsp;tweets<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="SentimentAnalysis-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Construct&nbsp;a&nbsp;new&nbsp;'<a href="#SentimentAnalysis">SentimentAnalysis</a>'&nbsp;object.</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-load_model"><strong>load_model</strong></a>(self, model_input_path)</dt><dd><tt>Load&nbsp;an&nbsp;already&nbsp;trained&nbsp;model<br>
+&nbsp;<br>
+:param&nbsp;model_input_path:&nbsp;the&nbsp;path&nbsp;of&nbsp;a&nbsp;model&nbsp;for&nbsp;analysis</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-load_train_data"><strong>load_train_data</strong></a>(self)</dt><dd><tt>Load&nbsp;an&nbsp;already&nbsp;processed&nbsp;training&nbsp;dataset</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-parse_training_dataset"><strong>parse_training_dataset</strong></a>(self, train_path)</dt><dd><tt>Process&nbsp;a&nbsp;raw&nbsp;training&nbsp;dataset,&nbsp;e.g.&nbsp;tokenization&nbsp;and&nbsp;lemmatization.<br>
+&nbsp;<br>
+:param&nbsp;train_path:&nbsp;the&nbsp;path&nbsp;of&nbsp;a&nbsp;raw&nbsp;training&nbsp;dataset</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-predict_sentiment"><strong>predict_sentiment</strong></a>(self, text)</dt><dd><tt>Predict&nbsp;sentiment&nbsp;of&nbsp;a&nbsp;new&nbsp;tweet.<br>
+&nbsp;<br>
+:param&nbsp;text:&nbsp;The&nbsp;text&nbsp;of&nbsp;the&nbsp;tweet<br>
+:return:&nbsp;The&nbsp;sentiment&nbsp;of&nbsp;the&nbsp;tweet,&nbsp;4&nbsp;means&nbsp;positive&nbsp;and&nbsp;0&nbsp;means&nbsp;negative</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-save_model"><strong>save_model</strong></a>(self, model_output_path)</dt><dd><tt>Save&nbsp;an&nbsp;already&nbsp;trained&nbsp;model<br>
+&nbsp;<br>
+:param&nbsp;model_output_path:&nbsp;the&nbsp;path&nbsp;of&nbsp;a&nbsp;model&nbsp;for&nbsp;analysis</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-test_data"><strong>test_data</strong></a>(self, test_path, output_path)</dt><dd><tt>Predict&nbsp;sentiment&nbsp;of&nbsp;a&nbsp;bunch&nbsp;of&nbsp;tweets.<br>
+&nbsp;<br>
+:param&nbsp;test_path:&nbsp;the&nbsp;path&nbsp;of&nbsp;a&nbsp;test&nbsp;dataset<br>
+:param&nbsp;output_path:&nbsp;the&nbsp;path&nbsp;of&nbsp;output&nbsp;file</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-train"><strong>train</strong></a>(self, train_path, model_output_path<font color="#909090">=''</font>, processed<font color="#909090">=False</font>, save<font color="#909090">=False</font>)</dt><dd><tt>Train&nbsp;the&nbsp;model&nbsp;for&nbsp;sentiment&nbsp;analysis.<br>
+&nbsp;<br>
+:param&nbsp;train_path:&nbsp;the&nbsp;path&nbsp;of&nbsp;a&nbsp;training&nbsp;dataset<br>
+:param&nbsp;model_output_path:&nbsp;the&nbsp;path&nbsp;of&nbsp;the&nbsp;output&nbsp;model<br>
+:param&nbsp;processed:&nbsp;does&nbsp;it&nbsp;need&nbsp;to&nbsp;re-process&nbsp;training&nbsp;dataset&nbsp;or&nbsp;not<br>
+:param&nbsp;save:&nbsp;does&nbsp;it&nbsp;need&nbsp;to&nbsp;save&nbsp;the&nbsp;model&nbsp;or&nbsp;not</tt></dd></dl>
+
+<dl><dt><a name="SentimentAnalysis-train_model"><strong>train_model</strong></a>(self, train_data, train_label)</dt><dd><tt>Save&nbsp;an&nbsp;already&nbsp;trained&nbsp;model<br>
+&nbsp;<br>
+:param&nbsp;train_data:&nbsp;the&nbsp;path&nbsp;of&nbsp;a&nbsp;processed&nbsp;dataset&nbsp;<br>
+:param&nbsp;train_label:&nbsp;the&nbsp;path&nbsp;of&nbsp;a&nbsp;label&nbsp;dataset&nbsp;for&nbsp;the&nbsp;processed&nbsp;dataset</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-time"><strong>time</strong></a>(...)</dt><dd><tt><a href="#-time">time</a>()&nbsp;-&gt;&nbsp;floating&nbsp;point&nbsp;number<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;current&nbsp;time&nbsp;in&nbsp;seconds&nbsp;since&nbsp;the&nbsp;Epoch.<br>
+Fractions&nbsp;of&nbsp;a&nbsp;second&nbsp;may&nbsp;be&nbsp;present&nbsp;if&nbsp;the&nbsp;system&nbsp;clock&nbsp;provides&nbsp;them.</tt></dd></dl>
+</td></tr></table>
+</body></html>

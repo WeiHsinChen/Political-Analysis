@@ -243,9 +243,10 @@ def check_tweet_on_sentiment():
     print (tweet['text'], tweet['sentiment'])
 
 
-if __name__ == '__main__':
+def main():
   parse_tweets()
   visualize_tweet_by_candidate_scale()
   visualize_tweet_by_domain()
   show_figure()
 
+# main()
