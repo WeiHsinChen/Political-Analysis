@@ -6,6 +6,8 @@ Political-Analysis program is designed for analyzing the sentiment of tweets for
 
 Once our system is incepted, it will keep collecting and analyzing tweets until user terminate it. The system also automatically and regularly generates analysis figures mentioned in the report. Therefore, it is easy for users to manipulate our system. Users just need to compile “twitter_streaming.py” without any parameters and close it by typing “Ctrl + C”. 
 
+We've placed our system's API documentation into its own folder, "API-Level Documentation", which can be viewed in any HTML browser.
+
 ## Required setup
 * Python 2.7
 * Numpy
