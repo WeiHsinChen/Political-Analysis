@@ -251,10 +251,8 @@ class Visualization:
     m.drawparallels(np.arange(25,65,20),labels=[1,0,0,0])
     m.drawmeridians(np.arange(-120,-40,20),labels=[0,0,0,1])
     plt.title(title)
-    if candidate1:
-      red_patch = mpatches.Patch(color='r', label=candidate1)
-    if candidate2:
-      blue_patch = mpatches.Patch(color='b', label=candidate2)
+    red_patch = mpatches.Patch(color='r', label=candidate1)
+    blue_patch = mpatches.Patch(color='b', label=candidate2)
     plt.legend(handles=[blue_patch, red_patch])
     plt.draw()
 

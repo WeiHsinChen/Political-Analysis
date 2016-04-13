@@ -56,7 +56,7 @@ def summary_state_domain(tweets_data):
   res_domain = {}
 
   for tweet in tweets_data:
-    can = tweet['candidate'][0]
+    can = tweet['candidate'][-1]
     state = tweet['state']
     domains = tweet['domain']
     if can not in res_state:
@@ -86,7 +86,6 @@ def parse_tweets():
   """ 
     Parse and summarize the processed tweets 
   """
-  # tweets_data_path = 'datasets/test_political_tweets.txt.txt'
   tweets_data_path = 'datasets/predicted_tweet.txt'
   tweets_data = []
   tweets_file = open(tweets_data_path, "r")
@@ -99,8 +98,25 @@ def parse_tweets():
     except:
       continue
 
+  # tweets_data_path = 'datasets/new_political_tweets.txt'
+  # tweets_data = []
+  # tweets_file = open(tweets_data_path, "r")
+  # for line in tweets_file:
+  #   try:
+  #     # tweets_data = json.loads(line)[0]
+  #     # print tweets_data
+  #     tweet = json.loads(line)
+  #     tweets_data.append(tweet)
+  #   except:
+  #     continue
+
+  # predict_sentiment(tweets_data)
+  # predict_domain(tweets_data)
+
+  # target_path = 'datasets/predicted_tweet.txt'
+  # target_file = open(tweets_data_path, "a")
   # for tweet in tweets_data:
-  #   print(json.dumps(tweet),file=tweets_file)
+  #   print(json.dumps(tweet),file=target_file)
 
 
   # predict_sentiment(tweets_data)
@@ -110,7 +126,6 @@ def parse_tweets():
   #   json.dump(tweets_data, outfile)
 
   # check what format of file is, based on state or based on candidate
-
   (sum_state, sum_domain) = summary_state_domain(tweets_data)
 
   with open('datasets/sum_state.txt', 'w') as outfile:
@@ -155,8 +170,8 @@ def visualize_tweet_by_candidate_scale():
     except:
       continue
 
-  gop = ['donald', 'cruz']
-  dem = ['hillary', 'bernie']
+  gop = ['trump', 'cruz']
+  dem = ['clinton', 'sanders']
   gop_sum = {}
   dem_sum = {}
   for candidate, dic in sum_state.items():
