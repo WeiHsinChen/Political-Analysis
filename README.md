@@ -1,4 +1,4 @@
-
+# Political-Analysis 
 
 ## Introduction
 
@@ -17,12 +17,13 @@ Once our system is incepted, it will keep collecting and analyzing tweets until 
 * Openpyxl
 
 
-## Instructions of APIs
-	* After a user installs all required package, he/she can incept the program by simply typing the following command in terminal.
+## Instructions of APIs 
+* After a user installs all required packages, he/she can incept the program by simply typing the following command in terminal.
 	
-	* Commands in terminal
+* Commands in terminal
 		
-		```
-		cd "the position of twitter_streaming"
-		python2.7 twitter_streaming
-		```
+			'''
+			cd "the position of twitter_streaming.py"
+			python2.7 twitter_streaming.py
+			'''
+
