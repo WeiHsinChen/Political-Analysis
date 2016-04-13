@@ -249,4 +249,4 @@ def main():
   visualize_tweet_by_domain()
   show_figure()
 
-# main()
+main()
