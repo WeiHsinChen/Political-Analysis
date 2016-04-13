@@ -103,8 +103,20 @@ map_process = None
 
 #This is a basic listener that just prints received tweets to stdout.
 class StdOutListener(StreamListener):
+    '''
+    
+    Standard output class for straeming tweets.
 
+    '''
     def on_data(self, data):
+        '''
+        
+        Receives streaming tweets in the form of a json formatted string to data.
+        Analyzes the data to include only relevant candidates and the sentiment.
+
+        :param data: A json formatted string of tweet metadata
+
+        '''
         # If we've exceeded time limit, quit
         global initial_time
         if ((time.time() - initial_time) > time_limit):
@@ -136,6 +148,11 @@ class StdOutListener(StreamListener):
         return True
 
     def on_error(self, status):
+        '''
+        If any error occurs during streaming process, prints the error status.
+
+        :param status: A string of the error status encountered
+        '''
         print(status)
 
 
