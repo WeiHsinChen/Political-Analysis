@@ -151,7 +151,35 @@ class StdOutListener(StreamListener):
 
 
         cur_num_tweets += 1
+        print()
         print("# of tweets collected in", cur_state, ":", cur_num_tweets)
+        proper_candidate_name = (" ".join(candidate_name)).title()
+        if proper_candidate_name == "Cruz":
+            proper_candidate_name = "Ted Cruz"
+        elif proper_candidate_name == "Kasich":
+            proper_candidate_name = "John Kasich"
+        sentiment_string = "positive tweet"
+        if data["sentiment"] == 2:
+            sentiment_string = "neutral tweet"
+        elif data["sentiment"] == 0:
+            sentiment_string = "negative tweet"
+        proper_topic_list = []
+        proper_topic_string = ""
+        if 'Fin' in data["domain"]:
+            proper_topic_list.append("Economics")
+        if 'Med' in data["domain"]:
+            proper_topic_list.append("Healthcare")
+        if 'Edu' in data["domain"]:
+            proper_topic_list.append("Education")
+        if 'Soc' in data["domain"]:
+            proper_topic_list.append("Social Issues")
+        if proper_topic_list != []:
+            proper_topic_string = ", ".join(proper_topic_list)
+            proper_topic_string = " about " + proper_topic_string
+
+
+        print(proper_candidate_name + ", " + sentiment_string + proper_topic_string)
+        # print("tweet: " + data["text"])
         if cur_num_tweets == max_num_tweets:
             return False
         return True
@@ -193,9 +221,14 @@ def main():
     #stream.filter(track=candidates_filter)
     #This line filter Twitter Streams to capture data by state
     global initial_time, cur_state, cur_num_tweets, max_num_tweets, output_file, map_process
+    first_iteration = True
 
     while True:
-        state = random.choice(states)
+        if first_iteration == True:
+            state = 'New York'
+            first_iteration = True
+        else:
+            state = random.choice(states)
         cur_state = state
         state_bounding_box = state_bounding_boxes_dict[state]
         # convert to integers
