@@ -36,7 +36,7 @@ def tweet_contains_exclusive_candidate(tweet, candidates_names_list):
         return candidate_name[:2]
 
 #Variables that contains the user credentials to access Twitter API  
-access_token = "3519287422-access_token"
+access_token = "access_token"
 access_token_secret = "access_token_secret"
 consumer_key = "consumer_key"
 consumer_secret = "consumer_secret"
