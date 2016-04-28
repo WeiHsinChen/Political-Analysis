@@ -35,16 +35,11 @@ def tweet_contains_exclusive_candidate(tweet, candidates_names_list):
     else:
         return candidate_name[:2]
 
-#Variables that contains the user credentials to access Twitter API 
-# access_token = "713016345793835009-itRGPior5WpiMa5ELRXpGuC4CrJBJmc"
-# access_token_secret = "tuxDyQVxU7IdHsJrDsi1Xn9JbDjKwTjglWR5kq7MU9SNA"
-# consumer_key = "FVL7UVGuBSy9IwRfrDuGd5GQP"
-# consumer_secret = "5m5JkSZkMvTdUZmZ7wXcCM62Cr4S6Qx7wwK0w2pVE0zAjk7NJK"
- 
-access_token = "3519287422-aEIFkrNSPrk3YBVCdDoIPERBRQbgAT2paQOvmSy"
-access_token_secret = "6HgbwAAnYglKHDCyLDCMwkmiRcOLqI1nMXrOdA0luYaSX"
-consumer_key = "TXk7hUXZukYDhqDNl6bT6lJwv"
-consumer_secret = "LOnkZSNAWIHcbFdbGB50uvpoTh8qeYWILEXNT695IFDOBcrpv9"
+#Variables that contains the user credentials to access Twitter API  
+access_token = "3519287422-access_token"
+access_token_secret = "access_token_secret"
+consumer_key = "consumer_key"
+consumer_secret = "consumer_secret"
 
 cur_num_tweets = 0
 max_num_tweets = 100
